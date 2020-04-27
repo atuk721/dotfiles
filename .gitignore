@@ -15,3 +15,6 @@
 
 !.gitignore
 !.gitkeep
+
+!/install.sh
+!/install_app.sh
