@@ -1,0 +1,17 @@
+/*
+/.**
+
+!/.backup
+
+!/.config
+!/.config/nvim
+!/.config/nvim/**
+
+!/.docker
+!/.docker/**
+
+!/.tmux.conf
+!/.zshrc
+
+!.gitignore
+!.gitkeep

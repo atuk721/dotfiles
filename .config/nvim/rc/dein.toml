@@ -1,0 +1,277 @@
+[[plugins]]
+repo = 'chemzqm/vim-easygit'
+
+#[[plugins]]
+#repo = 'freeo/vim-kalisi'
+
+#[[plugins]]
+#repo = 'glidenote/memolist.vim'
+#hook_post_source = '''
+#  let g:memolist_path = $HOME . '/OneDrive/document/memo/vim/'
+#'''
+[[plugins]]
+repo = 'easymotion/vim-easymotion'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_post_source = '''
+  let g:lightline = {
+        \ 'colorscheme': 'jellybeans',
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+        \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+        \ },
+        \ 'component_function': {
+        \   'fugitive': 'LightLineFugitive',
+        \   'filename': 'LightLineFilename',
+        \   'fileformat': 'LightLineFileformat',
+        \   'filetype': 'LightLineFiletype',
+        \   'fileencoding': 'LightLineFileencoding',
+        \   'mode': 'LightLineMode',
+        \   'ctrlpmark': 'CtrlPMark',
+        \ },
+        \ 'component_expand': {
+        \   'syntastic': 'SyntasticStatuslineFlag',
+        \ },
+        \ 'component_type': {
+        \   'syntastic': 'error',
+        \ },
+        \ 'subseparator': { 'left': '|', 'right': '|' }
+        \ }
+
+  function! LightLineModified()
+    return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  endfunction
+
+  function! LightLineReadonly()
+    return &ft !~? 'help' && &readonly ? 'RO' : ''
+  endfunction
+
+  function! LightLineFilename()
+    let fname = expand('%:t') " only filename
+    "let fname = expand('%:p') " full path
+    return fname == 'ControlP' ? g:lightline.ctrlp_item :
+          \ fname == '__Tagbar__' ? g:lightline.fname :
+          \ fname =~ '__Gundo\|NERD_tree' ? '' :
+          \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+          \ &ft == 'unite' ? unite#get_status_string() :
+          \ &ft == 'vimshell' ? vimshell#get_status_string() :
+          \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+          \ ('' != fname ? fname : '[No Name]') .
+          \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+  endfunction
+
+  function! LightLineFugitive()
+    try
+      if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+        let mark = ''  " edit here for cool mark
+        let _ = fugitive#head()
+        return strlen(_) ? mark._ : ''
+      endif
+    catch
+    endtry
+    return ''
+  endfunction
+
+  function! LightLineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+  endfunction
+
+  function! LightLineFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  endfunction
+
+  function! LightLineFileencoding()
+    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  endfunction
+
+  function! LightLineMode()
+    let fname = expand('%:t')
+    return fname == '__Tagbar__' ? 'Tagbar' :
+          \ fname == 'ControlP' ? 'CtrlP' :
+          \ fname == '__Gundo__' ? 'Gundo' :
+          \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+          \ fname =~ 'NERD_tree' ? 'NERDTree' :
+          \ &ft == 'unite' ? 'Unite' :
+          \ &ft == 'vimfiler' ? 'VimFiler' :
+          \ &ft == 'vimshell' ? 'VimShell' :
+          \ winwidth(0) > 60 ? lightline#mode() : ''
+  endfunction
+
+  function! CtrlPMark()
+    if expand('%:t') =~ 'ControlP'
+      call lightline#link('iR'[g:lightline.ctrlp_regex])
+      return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+            \ , g:lightline.ctrlp_next], 0)
+    else
+      return ''
+    endif
+  endfunction
+
+  let g:ctrlp_status_func = {
+    \ 'main': 'CtrlPStatusFunc_1',
+    \ 'prog': 'CtrlPStatusFunc_2',
+    \ }
+
+  function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
+    let g:lightline.ctrlp_regex = a:regex
+    let g:lightline.ctrlp_prev = a:prev
+    let g:lightline.ctrlp_item = a:item
+    let g:lightline.ctrlp_next = a:next
+    return lightline#statusline(0)
+  endfunction
+
+  function! CtrlPStatusFunc_2(str)
+    return lightline#statusline(0)
+  endfunction
+
+  let g:tagbar_status_func = 'TagbarStatusFunc'
+
+  function! TagbarStatusFunc(current, sort, fname, ...) abort
+      let g:lightline.fname = a:fname
+    return lightline#statusline(0)
+  endfunction
+
+  augroup AutoSyntastic
+    autocmd!
+    autocmd BufWritePost *.c,*.cpp call s:syntastic()
+  augroup END
+  function! s:syntastic()
+    SyntasticCheck
+    call lightline#update()
+  endfunction
+
+  let g:unite_force_overwrite_statusline = 0
+  let g:vimfiler_force_overwrite_statusline = 0
+  let g:vimshell_force_overwrite_statusline = 0
+'''
+
+#[[plugins]]
+#repo = 'jacoborus/tender.vim'
+#hook_add = '''
+#  autocmd VimEnter * nested colorscheme tender
+#'''
+
+[[plugins]]
+repo = 'justinmk/vim-sneak'
+
+[[plugins]]
+repo = 'kana/vim-tabpagecd'
+
+#[[plugins]]
+#repo = 'ctrlpvim/ctrlp.vim'
+#hook_add = '''
+#  let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+#  let g:ctrlp_clear_cache_on_exit = 0
+#  let g:ctrlp_lazy_update = 100
+#  let g:ctrlp_root_markers = ['Gemfile', 'pom.xml', 'build.xml']
+#  let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:20'
+#  let g:ctrlp_custom_ignore = {
+#    \ 'dir':  '\v[\/](\.git|node_modules|target)$',
+#    \ 'file': '\v\.(exe|so|dll)$',
+#    \ 'link': 'some_bad_symbolic_links',
+#    \ }
+#
+#  let g:ctrlp_user_command='rg %s --files --color=never --glob ""'
+#  "let g:ctrlp_use_caching=0
+#  let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+#'''
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
+hook_post_source = '''
+  let g:user_emmet_settings = {'lang' : 'ja'}
+'''
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+hook_post_source = '''
+  " Vim 起動時 vim-indent-guides を自動起動
+  let g:indent_guides_enable_on_vim_startup=1
+  " ガイドをスタートするインデントの量
+  let g:indent_guides_start_level=2
+  " 自動カラー無効
+  let g:indent_guides_auto_colors=0
+  " 奇数番目のインデントの色
+  "autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#444433 ctermbg=black
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#444433 ctermbg=234
+  " 偶数番目のインデントの色
+  "autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=235
+  " ガイドの幅
+  let g:indent_guides_guide_size = 1
+'''
+
+[[plugins]]
+repo = 'nixprime/cpsm'
+build = 'env PY3=ON ./install.sh'
+
+[[plugins]]
+repo = 'Quramy/tsuquyomi'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'Shougo/neossh.vim'
+
+[[plugins]]
+repo = 'Shougo/vimfiler.vim'
+hook_post_source = '''
+  let g:vimfiler_as_default_explorer = 1
+'''
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+[[plugins]]
+repo = 'Shougo/vimshell.vim'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+  nnoremap <silent> <Leader>n :NERDTree<CR>
+'''
+
+[[plugins]]
+repo = 'Shougo/neomru.vim' 
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+hook_post_source = '''
+  let g:quickrun_config = get(g:, 'quickrun_config', {})
+  let g:quickrun_config._ = {
+        \ 'runner'    : 'vimproc',
+        \ 'runner/vimproc/updatetime' : 60,
+        \ 'outputter' : 'error',
+        \ 'outputter/error/success' : 'buffer',
+        \ 'outputter/error/error'   : 'quickfix',
+        \ 'outputter/buffer/split'  : ':rightbelow 8sp',
+        \ 'outputter/buffer/close_on_empty' : 1,
+        \ }
+'''
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'vim-scripts/nginx.vim'
+
+#[[plugins]]
+#repo = 'vim-scripts/wombat256.vim'
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+hook_add = '''
+  let g:hybrid_custom_term_colors = 1
+  "let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
+  autocmd VimEnter * nested colorscheme hybrid
+'''
+
