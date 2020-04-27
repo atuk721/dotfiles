@@ -3,6 +3,10 @@
 
 !/.backup
 
+!/.local
+!/.local/lib
+!/.local/lib/**
+
 !/.config
 !/.config/nvim
 !/.config/nvim/**
