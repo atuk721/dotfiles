@@ -120,8 +120,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Set path
-# export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:/opt/apache-maven-3.6.0/bin:`yarn global bin`:$PATH"
-export PATH="$HOME/.local/bin:/usr/local/go/bin:$HOME/.cargo/bin:$HOME/go/bin:/opt/apache-maven-3.6.0/bin:$PATH"
+export PATH="$HOME/.local/bin:/usr/local/go/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
+
+if type yarn >/dev/null; then
+  export PATH="`yarn global bin`:$PATH"
+fi
 
 # For racer
 #set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
