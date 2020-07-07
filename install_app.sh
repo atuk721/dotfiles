@@ -14,7 +14,7 @@ npm install yarn -g
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Go
-filename=go1.14.2.linux-amd64.tar.gz
+filename=go1.14.4.linux-amd64.tar.gz
 curl -O "https://dl.google.com/go/${filename}"
 sudo tar -C /usr/local -xzf ${filename}
 rm -f ${filename}
