@@ -140,6 +140,10 @@ alias mysqlt='MYSQL_PWD=$TEST_DB_PASS mysql --ssl-mode DISABLED -A -h 127.0.0.1 
 # For z.sh
 . ~/.local/lib/z.sh
 
+# For Kubernetes
+alias k="kubectl"
+source <(kubectl completion zsh)
+
 # Start tmux
 if [[ ! -n $TMUX ]]; then
   tmux
